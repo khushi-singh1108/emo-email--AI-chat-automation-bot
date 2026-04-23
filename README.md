@@ -1,3 +1,4 @@
+![Workflow Screenshot](Screenshot%202026-04-23%20133701.png)
 # Emo: AI-Powered Assistant & Email Automation 🤖📩
 
 Emo is an intelligent hybrid assistant built with **n8n**. It combines conversational AI with practical automation to bridge the gap between chatting and taking action—specifically, drafting and sending personalized emails via Gmail.
