@@ -1,0 +1,106 @@
+{
+  "name": "Emo - AI Assistant & Email Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\ni am emo.\nyour email sending bff .How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [0, 0],
+      "id": "chat-trigger-node",
+      "name": "When chat message received",
+      "webhookId": "REMOVED_FOR_SECURITY"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [224, 0],
+      "id": "ai-agent-node",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [0, 224],
+      "id": "openai-model-node",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "HIDDEN",
+          "name": "OpenAI API Key"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [176, 224],
+      "id": "memory-node",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI('To', '', 'string') }}",
+        "subject": "={{ $fromAI('Subject', '', 'string') }}",
+        "emailType": "text",
+        "message": "={{ $fromAI('Message', '', 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [384, 208],
+      "id": "gmail-tool-node",
+      "name": "Gmail",
+      "webhookId": "REMOVED_FOR_SECURITY",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HIDDEN",
+          "name": "Personal Gmail"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [[{ "node": "AI Agent", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [[{ "node": "AI Agent", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Simple Memory": {
+      "ai_memory": [[{ "node": "AI Agent", "type": "ai_memory", "index": 0 }]]
+    },
+    "Gmail": {
+      "ai_tool": [[{ "node": "AI Agent", "type": "ai_tool", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "hidden",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "hidden"
+  }
+}
